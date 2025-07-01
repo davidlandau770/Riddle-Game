@@ -1,14 +1,16 @@
 import { question } from "readline-sync";
 
 class Riddle {
-    constructor(allRiddle, indexAsc) {
-        this.id = allRiddle[indexAsc].id;
-        this.name = allRiddle[indexAsc].name;
-        this.taskDescription = allRiddle[indexAsc].taskDescription;
-        this.correctAnswer = allRiddle[indexAsc].correctAnswer;
+    constructor(riddle) {
+        this.id = riddle.id;
+        this.numberAsc = riddle.numberAsc;
+        this.name = riddle.name;
+        this.level = riddle.level;
+        this.taskDescription = riddle.taskDescription;
+        this.correctAnswer = riddle.correctAnswer;
     }
     asc() {
-        console.log(`Riddle ${this.id}: ${this.name}`);
+        console.log(`Riddle ${this.numberAsc}: ${this.name}`);
         console.log(this.taskDescription);
         while (true) {
             const input = question("Enter the answer: ");
