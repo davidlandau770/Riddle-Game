@@ -1,53 +1,54 @@
 import allRiddles from "./riddles/AllRiddles.js";
 import { question } from "readline-sync";
 import { Player } from "./classes/Player.js";
-import { Riddle } from "./classes/Riddle.js"
+import { sendAsc } from "./classes/manager.js";
 
-const { p, input } = genPerson();
-timeGame();
+// שם משתמש
+console.log("Welcome to the world's biggest math game!!!!");
+const inputName = question("What is your name? ");
+console.log(`hello ${inputName}!`);
 
-function genPerson() {
-    console.log("Welcome to the world's biggest math game!!!!");
-    const input = question("What is your name? ");
-    console.log("hello " + input);
-    const p = new Player(input);
-    return { p, input };
+// לולאה ראשית לבחירת רמה
+let riddles;
+let p;
+while (true) {
+    const inputLevel = question("choose level difficulty by number (easy / medium / hard): ");
+    riddles = allRiddles.filter(r => r.level === inputLevel);
+    p = new Player(inputName);
+    timeGame();
+    const wantToContinue = question("\nDo you want to advance to the next level or exit? (continue, exit) ")
+    if (wantToContinue === "exit") {
+        break;
+    }
 }
 
 function timeGame() {
     try {
         let indexAsc = 0;
         while (true) {
+            // רישום שעת התחלה
             console.log("");
             const start = Date.now();
-            const correct = sendAsc(indexAsc)
 
+            // הוצאת שאלה לשליחה למשתמש
+            const riddle = riddles[indexAsc]
+            const correct = sendAsc(riddle)
+
+            // רישום שעת סיום
             const end = Date.now();
             p.recordTime(start, end)
 
+            // בדיקת השאלה הבאה
             if (correct) {
                 indexAsc++;
-                if (indexAsc >= allRiddles.length) {
-                    console.log(`\nGreat job, ${input}!`);
+                if (indexAsc >= riddles.length) {
+                    console.log(`\nGreat job, ${inputName}!`);
                     p.showStats();
                     return;
-                }
-                else {
-                    console.log("You have successfully answered all the questions!\nYou are welcome to start from the beginning...");
                 }
             }
         }
     } catch (err) {
         console.error(`app: ${err.message}`)
-    }
-}
-
-function sendAsc(indexAsc) {
-    try {
-        const r = new Riddle(allRiddles, indexAsc);
-        const correct = r.asc();
-        return correct;
-    } catch (err) {
-        console.log(`app: SendToRiddle: ${err.message}`);
     }
 }
