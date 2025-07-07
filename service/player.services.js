@@ -5,11 +5,12 @@ import { Crud } from "../DAL/crud.js";
 const c = new Crud();
 const pathPlayer = "./DAL/dbPlayer.txt";
 
-async function signUser() {
+async function UsernameRegistration() {
     console.log("Welcome to the world's biggest math game!!!!");
     const inputName = question("What is your name? ");
     console.log(`hello ${inputName}!`);
-    const players = await c.read(pathPlayer);
+    // const players = await c.read(pathPlayer);
+    return inputName;
 }
 
 function sendAsc(riddle) {
@@ -25,5 +26,5 @@ function sendAsc(riddle) {
 
 export {
     sendAsc,
-    signUser
+    UsernameRegistration
 }

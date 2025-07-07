@@ -1,22 +1,23 @@
 import { question } from "readline-sync";
 import allRiddles from "./DAL/allRiddles.js";
 import { Player } from "./classes/Player.js";
-import { sendAsc, signUser } from "./service/player.services.js";
+import { sendAsc, UsernameRegistration } from "./service/player.services.js";
 import { createAsc, readRiddles, updateRiddle, deleteRiddle } from "./service/riddle.services.js";
 
 
-// שם משתמש
-signUser()
-// לולאה ראשית לבחירת רמה
-let riddles;
-let p;
+// רישום שם משתמש
+const inputName = UsernameRegistration()
+
+// לולאת תפריט
+let riddles = allRiddles;
+let p = new Player(inputName);
 async function menuToUser() {
     while (true) {
         const numberMenu = question("What do you want to do (choose by number)?\n1. Play the game\n2. Create a new riddle\n3. Read all riddles\n4. Update an existing riddle\n5. Delete a riddle\n6. View leaderboard\n");
         switch (numberMenu) {
             case "1":
-                riddles = allRiddles;
-                p = new Player(inputName);
+                // riddles = allRiddles;
+                // p = new Player(inputName);
                 startGame();
                 break;
             case "2":
@@ -62,6 +63,7 @@ function startGame() {
             if (correct) {
                 indexAsc++;
                 if (indexAsc >= riddles.length) {
+                    console.log(inputName);
                     console.log(`\nGreat job, ${inputName}!`);
                     p.showStats();
                     return;
