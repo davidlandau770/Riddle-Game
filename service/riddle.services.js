@@ -20,7 +20,7 @@ async function appendRiddle(obj) {
 
 async function createAsc() {
     const response = await fetch(`${URL}/riddles/getId`);
-    const newId = await response.json();    
+    const newId = await response.json();
     const numberAsc = newId;
     const name = question("Enter name of asc: ");
     const level = question("Enter level of asc: ");
@@ -42,13 +42,16 @@ async function readRiddles() {
 }
 
 async function updateRiddle(obj) {
-    await fetch(`${URL}/riddles/updateRiddle`, {
+    const response = await fetch(`${URL}/riddles/updateRiddle`, {
         headers: {
             'Content-Type': 'application/json',
         },
         method: 'PUT',
         body: JSON.stringify(obj)
     })
+    const body = await response.json();
+    console.log(body);
+
     // const riddles = await c.read(pathRiddle);
     // const keys = ["qnumberAsc", "name", "level", "taskDescription", "correctAnswer"];
 
@@ -86,27 +89,39 @@ async function createObjToUpdate() {
 }
 
 async function deleteRiddle() {
-    let riddles = await c.read(pathRiddle);
-    const id = Number(question("Enter id: "));
+    const response = await fetch(`${URL}/riddles/deleteRiddle`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'DELETE',
+        body: JSON.stringify({
+            id: question("Enter id to remove: ")
+        })
+    })
+    const body = await response.json();
+    console.log(body);
 
-    // מציאת אינדקס למחיקה
-    let index;
-    for (let i in riddles) {
-        if (riddles[i].id === id) {
-            index = i;
-        }
-    };
-    if (index >= 0) {
-        riddles.splice(index, 1)
-        // איפוס הספירה מחדש
-        for (let i in riddles) {
-            riddles[i].id = Number(i) + 1;
-        };
-        await c.write(pathRiddle, riddles, "delete")
-    }
-    else {
-        console.log("invalid key");
-    }
+    // let riddles = await c.read(pathRiddle);
+    // const id = Number(question("Enter id: "));
+
+    // // מציאת אינדקס למחיקה
+    // let index;
+    // for (let i in riddles) {
+    //     if (riddles[i].id === id) {
+    //         index = i;
+    //     }
+    // };
+    // if (index >= 0) {
+    //     riddles.splice(index, 1)
+    //     // איפוס הספירה מחדש
+    //     for (let i in riddles) {
+    //         riddles[i].id = Number(i) + 1;
+    //     };
+    //     await c.write(pathRiddle, riddles, "delete")
+    // }
+    // else {
+    //     console.log("invalid key");
+    // }
 }
 
 export {
