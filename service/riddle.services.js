@@ -3,76 +3,92 @@ import { Crud } from "../DAL/crud.js";
 
 const c = new Crud();
 const pathRiddle = "./DAL/dbRiddles.txt";
+const URL = "http://localhost:3000"
 
 
-
-async function appendRiddle(pathRiddle, obj) {
-    const riddles = await c.read(pathRiddle);
-    const exists = riddles.some(riddle => riddle.taskDescription === obj.taskDescription);
-    // const objR = await c.getId(path);
-
-    // obj.forEach(riddle => {
-    //     console.log(riddle);
-    // });
-    if (!exists) {
-        riddles.push(obj);
-        await c.write(pathRiddle, riddles, "add");
-    }
+async function appendRiddle(obj) {
+    const response = await fetch(`${URL}/riddles/addRiddle`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(obj)
+    })
+    const body = await response.json();
+    console.log(body);
 }
 
 async function createAsc() {
-    const oldId = await c.getId(pathRiddle) || 0;
-    const newId = oldId + 1;
-    const qnumberAsc = newId;
-    const qname = question("Enter name of asc: ");
-    const qlevel = question("Enter level of asc: ");
-    const qtaskDescription = question("Enter asc: ");
-    const qcorrectAnswer = question("Enter correct answer: ");
+    const response = await fetch(`${URL}/riddles/getId`);
+    const newId = await response.json();    
+    const numberAsc = newId;
+    const name = question("Enter name of asc: ");
+    const level = question("Enter level of asc: ");
+    const taskDescription = question("Enter asc: ");
+    const correctAnswer = question("Enter correct answer: ");
     const objAsc = {
         id: newId,
-        numberAsc: qnumberAsc,
-        name: qname,
-        level: qlevel,
-        taskDescription: qtaskDescription,
-        correctAnswer: qcorrectAnswer
+        numberAsc: numberAsc,
+        name: name,
+        level: level,
+        taskDescription: taskDescription,
+        correctAnswer: correctAnswer
     };
-    await appendRiddle(pathRiddle, objAsc);
+    await appendRiddle(objAsc);
 }
 
 async function readRiddles() {
-    const riddles = await c.read(pathRiddle);
-    console.log(riddles);
+    await fetch(`${URL}/riddles`).then((res) => res.json()).then((data) => console.log(data)).catch((err) => console.log(err));
 }
 
-async function updateRiddle() {
-    const riddles = await c.read(pathRiddle);
-    const keys = ["qnumberAsc", "name", "level", "taskDescription", "correctAnswer"];
+async function updateRiddle(obj) {
+    await fetch(`${URL}/riddles/updateRiddle`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+        body: JSON.stringify(obj)
+    })
+    // const riddles = await c.read(pathRiddle);
+    // const keys = ["qnumberAsc", "name", "level", "taskDescription", "correctAnswer"];
 
-    const id = Number(question("Enter id: "));
-    const key = question("Enter key: ");
-    const newValue = question("Enter new value: ");
-    let exists = false;
+    // const id = Number(question("Enter id: "));
+    // const key = question("Enter key: ");
+    // const newValue = question("Enter new value: ");
+    // let exists = false;
 
-    if (!keys.includes(key)) {
-        console.log("invalid key");
-        return;
-    }
-    riddles.forEach(async riddle => {
-        if (riddle.id === id) {
-            riddle[key] = newValue;
-            exists = true;
-            await c.write(pathRiddle, riddles, "update")
-        }
-    });
-    if (!exists) {
-        return console.log("invalid id");
-    }
+    // if (!keys.includes(key)) {
+    //     console.log("invalid key");
+    //     return;
+    // }
+    // riddles.forEach(async riddle => {
+    //     if (riddle.id === id) {
+    //         riddle[key] = newValue;
+    //         exists = true;
+    //         await c.write(riddles, "update")
+    //     }
+    // });
+    // if (!exists) {
+    //     return console.log("invalid id");
+    // }
+}
+
+async function createObjToUpdate() {
+    const id = question("Enter asc id to update: ");
+    const taskDescription = question("Enter new asc: ");
+    const correctAnswer = question("Enter correct answer: ");
+    const objToUpdate = {
+        id: id,
+        taskDescription: taskDescription,
+        correctAnswer: correctAnswer
+    };
+    await updateRiddle(objToUpdate);
 }
 
 async function deleteRiddle() {
     let riddles = await c.read(pathRiddle);
     const id = Number(question("Enter id: "));
-    
+
     // מציאת אינדקס למחיקה
     let index;
     for (let i in riddles) {
@@ -96,7 +112,7 @@ async function deleteRiddle() {
 export {
     createAsc,
     readRiddles,
-    updateRiddle,
+    createObjToUpdate,
     deleteRiddle
 }
 // let id = 0;

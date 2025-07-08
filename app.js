@@ -2,7 +2,7 @@ import { question } from "readline-sync";
 import allRiddles from "./DAL/allRiddles.js";
 import { Player } from "./classes/Player.js";
 import { sendAsc, UsernameRegistration } from "./service/player.services.js";
-import { createAsc, readRiddles, updateRiddle, deleteRiddle } from "./service/riddle.services.js";
+import { createAsc, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.services.js";
 
 
 // רישום שם משתמש
@@ -27,7 +27,7 @@ async function menuToUser() {
                 await readRiddles();
                 break;
             case "4":
-                await updateRiddle();
+                await createObjToUpdate();
                 break;
             case "5":
                 await deleteRiddle();
