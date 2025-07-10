@@ -1,10 +1,11 @@
 import { Player } from "../classes/Player.js";
-import { sendAsc, UsernameRegistration } from "./player.services.js";
-import allRiddles from "../DAL/allRiddles.js";
+import { Riddle } from "../classes/Riddle.js";
+import { UsernameRegistration } from "./player.services.js";
+import { readRiddles } from "./riddle.services.js";
 
-function startGame() {
-    let riddles = allRiddles;
-    const inputName = UsernameRegistration();
+async function startGame() {
+    const riddles = await readRiddles();
+    const inputName = await UsernameRegistration();
     let p = new Player(inputName);
 
     try {
@@ -16,17 +17,24 @@ function startGame() {
             const logStartTime = Date.now();
 
             // הוצאת שאלה לשליחה למשתמש
-            const riddle = riddles[indexAsc];
-            const correct = sendAsc(riddle);
+            const currentRiddle = riddles[indexAsc];
+            let correctAnswer;
+            try {
+                const r = new Riddle(currentRiddle);
+                correctAnswer = r.asc();
+            } catch (err) {
+                console.log(`game.service: SendRiddle: ${err.message}`);
+            }
 
             const logEndTime = Date.now();
             p.recordTime(logStartTime, logEndTime);
 
             // בדיקת השאלה הבאה
-            if (correct) {
+            if (correctAnswer) {
                 indexAsc++;
+
+                // בדיקת סיום השאלות
                 if (indexAsc >= riddles.length) {
-                    // console.log(inputName);
                     console.log(`\nGreat job, ${inputName}!`);
                     p.showStats();
                     stop = true;

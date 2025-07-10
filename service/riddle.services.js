@@ -31,7 +31,8 @@ async function createAsc() {
 }
 
 async function readRiddles() {
-    await fetch(`${URL}/riddles`).then((res) => res.json()).then((data) => console.log(data)).catch((err) => console.log(err));
+    const riddles = await fetch(`${URL}/riddles`).then((res) => res.json());
+    return riddles
 }
 
 async function updateRiddle(obj) {
