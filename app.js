@@ -1,6 +1,7 @@
 import { question } from "readline-sync";
-import { createAsc, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.services.js";
+import { createAsc, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.service.js";
 import { startGame } from "./service/game.service.js";
+import { viewLeaderboard } from "./service/player.service.js";
 
 async function menuToUser() {
     let stop = false;
@@ -22,11 +23,14 @@ async function menuToUser() {
             case "5":
                 await deleteRiddle();
                 break;
+            case "6":
+                await viewLeaderboard();
+                break;
             case "0":
                 stop = true;
                 break;
             default:
-                console.log("Please choose a valid number (1-6)");
+                console.log("Please choose a valid number (0-6)");
         }
     }
 }

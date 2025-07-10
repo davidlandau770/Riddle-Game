@@ -1,11 +1,11 @@
 import { Player } from "../classes/Player.js";
 import { Riddle } from "../classes/Riddle.js";
-import { UsernameRegistration } from "./player.services.js";
-import { readRiddles } from "./riddle.services.js";
+import { usernameRegistration } from "./player.service.js";
+import { readRiddles } from "./riddle.service.js";
 
 async function startGame() {
     const riddles = await readRiddles();
-    const inputName = await UsernameRegistration();
+    const inputName = await usernameRegistration();
     let p = new Player(inputName);
 
     try {
