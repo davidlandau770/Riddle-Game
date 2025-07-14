@@ -6,9 +6,9 @@ class Player {
     recordTime(start, end) {
         this.#times.push((end - start) / 1000);
     }
-    getLowestTime() {
+    lowestTime() {
         if (this.#times.length === 0) return null;
-        return Math.min(...this.#times)
+        return Math.min(...this.#times);
     }
     showStats() {
         let sum = 0;

@@ -13,8 +13,8 @@ const usernameRegistration = async () => {
 
 const addPlayer = async () => {
     const obj = {
-        name: usernameRegistration(),
-        lowestTime: p.getLowestTime()
+        name: await usernameRegistration(),
+        lowestTime: p.lowestTime()
     }
     console.log("obj: ");
     console.log(obj);
@@ -34,7 +34,9 @@ const getPlayer = async () => {
 }
 
 const viewLeaderboard = async () => {
-    return await p.getLowestTime()
+    const players = await getPlayer();
+    const lowestPlayers = players.sort((a, b) => a.lowestTime - b.lowestTime).splice(0,3)
+    console.log(lowestPlayers);
 }
 
 export {
