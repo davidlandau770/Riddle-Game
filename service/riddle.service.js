@@ -1,8 +1,8 @@
 import { question } from "readline-sync";
 
-const URL = "http://localhost:3000"
+const URL = "http://localhost:3000";
 
-async function appendRiddle(obj) {
+async function addRiddle(obj) {
     const response = await fetch(`${URL}/riddles/addRiddle`, {
         headers: {
             'Content-Type': 'application/json',
@@ -27,11 +27,12 @@ async function createAsc() {
         taskDescription: taskDescription,
         correctAnswer: correctAnswer
     };
-    await appendRiddle(objAsc);
+    await addRiddle(objAsc);
 }
 
 async function readRiddles() {
-    await fetch(`${URL}/riddles`).then((res) => res.json()).then((data) => console.log(data)).catch((err) => console.log(err));
+    const riddles = await fetch(`${URL}/riddles`).then((res) => res.json());
+    return riddles
 }
 
 async function updateRiddle(obj) {

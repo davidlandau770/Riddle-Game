@@ -10,17 +10,15 @@ class Riddle {
         this.correctAnswer = riddle.correctAnswer;
     }
     asc() {
-        console.log(`Riddle ${this.numberAsc}: ${this.name}`);
+        console.log(`Riddle ${this.id}: ${this.name}`);
         console.log(this.taskDescription);
-        while (true) {
-            const input = question("Enter the answer: ");
-            if (input == this.correctAnswer) {
-                console.log("correct!!!");
-                return true;
-            }
-            else {
-                console.log("\nError, please try again.");
-            }
+        const input = question("Enter the answer: ");
+        if (input === this.correctAnswer.toString()) {
+            console.log("\ncorrect!!!");
+            return true;
+        }
+        else {
+            console.log("\nError, please try again.");
         }
     }
 }
