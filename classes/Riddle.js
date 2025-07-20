@@ -9,16 +9,19 @@ class Riddle {
         this.taskDescription = riddle.taskDescription;
         this.correctAnswer = riddle.correctAnswer;
     }
-    asc() {
-        console.log(`Riddle ${this.id}: ${this.name}`);
-        console.log(this.taskDescription);
-        const input = question("Enter the answer: ");
-        if (input === this.correctAnswer.toString()) {
-            console.log("\ncorrect!!!");
-            return true;
-        }
-        else {
-            console.log("\nError, please try again.");
+    ask() {
+        let correctAnswer = false;
+        while (!correctAnswer) {
+            console.log(`Riddle ${this.id}: ${this.name}`);
+            const input = question(`${this.taskDescription}\nEnter the answer: `);
+            if (input === this.correctAnswer.toString()) {
+                console.log("\ncorrect!!!");
+                correctAnswer = true;
+            }
+            else {
+                console.log("\nError, please try again.");
+                continue;
+            }
         }
     }
 }

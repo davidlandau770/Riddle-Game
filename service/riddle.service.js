@@ -2,6 +2,10 @@ import { question } from "readline-sync";
 
 const URL = "http://localhost:3000";
 
+async function readRiddles() {
+    return await fetch(`${URL}/riddles`).then((res) => res.json())
+}
+
 async function addRiddle(obj) {
     const response = await fetch(`${URL}/riddles/addRiddle`, {
         headers: {
@@ -14,7 +18,7 @@ async function addRiddle(obj) {
     console.log(body);
 }
 
-async function createAsc() {
+async function createAsk() {
     const numberAsc = 0;
     const name = question("Enter name of asc: ");
     const level = question("Enter level of asc: ");
@@ -30,13 +34,8 @@ async function createAsc() {
     await addRiddle(objAsc);
 }
 
-async function readRiddles() {
-    const riddles = await fetch(`${URL}/riddles`).then((res) => res.json());
-    return riddles
-}
-
-async function updateRiddle(obj) {
-    const response = await fetch(`${URL}/riddles/updateRiddle`, {
+async function updateRiddle(id, obj) {
+    const response = await fetch(`${URL}/riddles/updateRiddle/${id}`, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -49,32 +48,34 @@ async function updateRiddle(obj) {
 
 async function createObjToUpdate() {
     const id = question("Enter asc id to update: ");
+    const name = question("Enter name of asc: ");
+    const level = question("Enter level of asc: ");
     const taskDescription = question("Enter new asc: ");
     const correctAnswer = question("Enter correct answer: ");
     const objToUpdate = {
-        id: id,
+        numberAsc: 0,
+        name: name,
+        level: level,
         taskDescription: taskDescription,
         correctAnswer: correctAnswer
     };
-    await updateRiddle(objToUpdate);
+    await updateRiddle(id, objToUpdate);
 }
 
 async function deleteRiddle() {
-    const response = await fetch(`${URL}/riddles/deleteRiddle`, {
+    const id = question("Enter asc id to update: ");
+    const response = await fetch(`${URL}/riddles/deleteRiddle/${id}`, {
         headers: {
             'Content-Type': 'application/json',
         },
         method: 'DELETE',
-        body: JSON.stringify({
-            id: question("Enter id to remove: ")
-        })
     })
     const body = await response.json();
     console.log(body);
 }
 
 export {
-    createAsc,
+    createAsk,
     readRiddles,
     createObjToUpdate,
     deleteRiddle

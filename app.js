@@ -1,9 +1,9 @@
 import { question } from "readline-sync";
-import { createAsc, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.service.js";
+import { createAsk, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.service.js";
 import { startGame } from "./service/game.service.js";
 import { viewLeaderboard } from "./service/player.service.js";
 
-async function menuToUser() {
+const menuToUser = async () => {
     let stop = false;
     while (!stop) {
         const numberMenu = question("What do you want to do (choose by number)?\n1. Play the game\n2. Create a new riddle\n3. Read all riddles\n4. Update an existing riddle\n5. Delete a riddle\n6. View leaderboard\n0. exit\n");
@@ -12,7 +12,7 @@ async function menuToUser() {
                 await startGame();
                 break;
             case "2":
-                await createAsc();
+                await createAsk();
                 break;
             case "3":
                 console.log(await readRiddles());

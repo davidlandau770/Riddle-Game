@@ -1,27 +1,25 @@
 import { Player } from "../classes/Player.js";
 import { Riddle } from "../classes/Riddle.js";
-import { addPlayer, usernameRegistration } from "./player.service.js";
+import { addPlayer, updatePlayer } from "./player.service.js";
 import { readRiddles } from "./riddle.service.js";
 
 async function startGame() {
     const riddles = await readRiddles();
     const inputName = await addPlayer();
     let p = new Player();
-
     try {
-        let indexAsc = 0;
+        let indexAsk = 0;
         let stop = false;
         while (!stop) {
             console.log("");
-
             const logStartTime = Date.now();
 
             // הוצאת שאלה לשליחה למשתמש
-            const currentRiddle = riddles[indexAsc];
+            const currentRiddle = riddles[indexAsk];
             let correctAnswer;
             try {
                 const r = new Riddle(currentRiddle);
-                correctAnswer = r.asc();
+                r.ask();
             } catch (err) {
                 console.log(`game.service: SendRiddle: ${err.message}`);
             }
@@ -29,16 +27,19 @@ async function startGame() {
             const logEndTime = Date.now();
             p.recordTime(logStartTime, logEndTime);
 
-            // בדיקת השאלה הבאה
-            if (correctAnswer) {
-                indexAsc++;
+            // השאלה הבאה
+            indexAsk++;
 
-                // בדיקת סיום השאלות
-                if (indexAsc >= riddles.length) {
-                    console.log(`\nGreat job, ${inputName}!`);
-                    p.showStats();
-                    stop = true;
+            // סיום השאלות
+            if (indexAsk >= riddles.length) {
+                try {
+                    await updatePlayer(inputName, p);
+                } catch (err) {
+                    console.error(`updatePlayer: ${err.message}`);
                 }
+                console.log(`\nGreat job, ${inputName}!`);
+                p.showStats();
+                stop = true;
             }
         }
     } catch (err) {
