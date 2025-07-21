@@ -1,5 +1,5 @@
 import { question } from "readline-sync";
-import { createAsk, readRiddles, createObjToUpdate, deleteRiddle } from "./service/riddle.service.js";
+import { createObjToAddRiddle, readRiddles, createObjToUpdate as createObjToUpdateRiddle, deleteRiddle } from "./service/riddle.service.js";
 import { startGame } from "./service/game.service.js";
 import { viewLeaderboard } from "./service/player.service.js";
 
@@ -12,13 +12,13 @@ const menuToUser = async () => {
                 await startGame();
                 break;
             case "2":
-                await createAsk();
+                await createObjToAddRiddle();
                 break;
             case "3":
                 console.log(await readRiddles());
                 break;
             case "4":
-                await createObjToUpdate();
+                await createObjToUpdateRiddle();
                 break;
             case "5":
                 await deleteRiddle();

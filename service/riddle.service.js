@@ -18,7 +18,7 @@ async function addRiddle(obj) {
     console.log(body);
 }
 
-async function createAsk() {
+async function createObjToAddRiddle() {
     const numberAsc = 0;
     const name = question("Enter name of asc: ");
     const level = question("Enter level of asc: ");
@@ -46,7 +46,7 @@ async function updateRiddle(id, obj) {
     console.log(body);
 }
 
-async function createObjToUpdate() {
+async function createObjToUpdateRiddle() {
     const id = question("Enter asc id to update: ");
     const name = question("Enter name of asc: ");
     const level = question("Enter level of asc: ");
@@ -75,8 +75,8 @@ async function deleteRiddle() {
 }
 
 export {
-    createAsk,
+    createObjToAddRiddle,
     readRiddles,
-    createObjToUpdate,
+    createObjToUpdateRiddle,
     deleteRiddle
 }
