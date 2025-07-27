@@ -1,11 +1,11 @@
 import { Player } from "../classes/Player.js";
 import { Riddle } from "../classes/Riddle.js";
-import { addPlayer, updatePlayer } from "./player.service.js";
+import { updatePlayer } from "./player.service.js";
 import { readRiddles } from "./riddle.service.js";
 
-async function startGame() {
+async function startGame(username) {
     const riddles = await readRiddles();
-    const inputName = await addPlayer();
+    // const inputName = await addPlayer();
     let p = new Player();
     try {
         let indexAsk = 0;
@@ -16,7 +16,6 @@ async function startGame() {
 
             // הוצאת שאלה לשליחה למשתמש
             const currentRiddle = riddles[indexAsk];
-            let correctAnswer;
             try {
                 const r = new Riddle(currentRiddle);
                 r.ask();
@@ -33,11 +32,11 @@ async function startGame() {
             // סיום השאלות
             if (indexAsk >= riddles.length) {
                 try {
-                    await updatePlayer(inputName, p);
+                    await updatePlayer(username, p);
                 } catch (err) {
                     console.error(`updatePlayer: ${err.message}`);
                 }
-                console.log(`\nGreat job, ${inputName}!`);
+                console.log(`\nGreat job, ${username}!`);
                 p.showStats();
                 stop = true;
             }
